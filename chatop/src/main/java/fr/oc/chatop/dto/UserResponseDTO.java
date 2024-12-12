@@ -1,33 +1,27 @@
-package fr.oc.chatop.entity;
+package fr.oc.chatop.dto;
 
-import jakarta.persistence.*;
-
-import java.util.List;
-
-@Entity
-@Table(name="users")
-public class User {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+public class UserResponseDTO {
+    private int id;
     private String name;
     private String email;
     private String created_at;
     private String updated_at;
 
+    public UserResponseDTO(int id, String name, String email, String created_at, String updated_at) {
 
-    @OneToMany(mappedBy = "owner")
-    private List<Rental> rentals;
-
-public User() {}
-
-    public User(Long id, String name, String email, String created_at, String updated_at) {
         this.id = id;
         this.name = name;
         this.email = email;
         this.created_at = created_at;
         this.updated_at = updated_at;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getName() {
@@ -60,20 +54,5 @@ public User() {}
 
     public void setUpdated_at(String updated_at) {
         this.updated_at = updated_at;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public Long getId() {
-        return id;
-    }
-    public List<Rental> getRentals() {
-        return rentals;
-    }
-
-    public void setRentals(List<Rental> rentals) {
-        this.rentals = rentals;
     }
 }

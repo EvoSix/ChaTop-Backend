@@ -2,7 +2,7 @@ package fr.oc.chatop.web.controller;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/messages")
+@RequestMapping("/messages")
 public class MessageController {
 
 

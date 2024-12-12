@@ -1,42 +1,37 @@
-package fr.oc.chatop.entity;
+package fr.oc.chatop.dto;
 
-import jakarta.persistence.*;
-
-@Entity
-@Table(name="rentals")
-
-public class Rental {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+public class RentalResponseDTO {
     private Long id;
     private String name;
     private Long surface;
     private Double price;
     private String picture;
-    @Column(length = 2000)
     private String description;
-
-    @ManyToOne
-    @JoinColumn(name = "owner_id", nullable = false)
-    private User owner;
-
+    private Long owner_id;
     private String created_at;
     private String updated_at;
 
-    public Rental(Long id, String name, Long surface, Double price, String picture, String description, User owner, String created_at, String updated_at) {
+    public RentalResponseDTO() {
+    }
+
+    public RentalResponseDTO(Long id, String name, Long surface, Double price, String picture, String description,Long owner, String created_at, String updated_at) {
         this.id = id;
         this.name = name;
         this.surface = surface;
         this.price = price;
         this.picture = picture;
         this.description = description;
-        this.owner = owner;
+  this.owner_id = owner;
         this.created_at = created_at;
         this.updated_at = updated_at;
     }
 
-    public Rental() {
+    public Long getId() {
+        return id;
+    }
 
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getName() {
@@ -79,13 +74,6 @@ public class Rental {
         this.description = description;
     }
 
-    public Long getOwner_id() {
-        return owner_id;
-    }
-
-    public void setOwner_id(Long owner_id) {
-        this.owner_id = owner_id;
-    }
 
     public String getCreated_at() {
         return created_at;
