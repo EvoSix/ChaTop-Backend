@@ -7,7 +7,7 @@ public class RentalResponseDTO {
     private Double price;
     private String picture;
     private String description;
-    private Long owner_id;
+    private Long owner;
     private String created_at;
     private String updated_at;
 
@@ -21,7 +21,7 @@ public class RentalResponseDTO {
         this.price = price;
         this.picture = picture;
         this.description = description;
-  this.owner_id = owner;
+  this.owner = owner;
         this.created_at = created_at;
         this.updated_at = updated_at;
     }

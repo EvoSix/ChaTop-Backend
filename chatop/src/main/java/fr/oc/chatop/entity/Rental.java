@@ -1,8 +1,9 @@
 package fr.oc.chatop.entity;
 
 import jakarta.persistence.*;
-
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 @Entity
+@EntityListeners(AuditingEntityListener.class)
 @Table(name="rentals")
 
 public class Rental {
@@ -37,6 +38,14 @@ public class Rental {
 
     public Rental() {
 
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getName() {
@@ -79,12 +88,12 @@ public class Rental {
         this.description = description;
     }
 
-    public Long getOwner_id() {
-        return owner_id;
+    public User getOwner_id() {
+        return owner;
     }
 
-    public void setOwner_id(Long owner_id) {
-        this.owner_id = owner_id;
+    public void setOwner_id(User owner_id) {
+        this.owner = owner_id;
     }
 
     public String getCreated_at() {

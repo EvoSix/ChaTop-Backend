@@ -1,12 +1,21 @@
 package fr.oc.chatop.entity;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.NoArgsConstructor;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
+import java.util.Collection;
 import java.util.List;
-
 @Entity
-@Table(name="users")
-public class User {
+@NoArgsConstructor
+@AllArgsConstructor
+@EntityListeners(AuditingEntityListener.class)
+@Table(name = "users")
+public class User implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -15,21 +24,12 @@ public class User {
     private String email;
     private String created_at;
     private String updated_at;
+    private String password;
 
-
-    @OneToMany(mappedBy = "owner")
+    @OneToMany(mappedBy = "owner", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Rental> rentals;
 
-public User() {}
-
-    public User(Long id, String name, String email, String created_at, String updated_at) {
-        this.id = id;
-        this.name = name;
-        this.email = email;
-        this.created_at = created_at;
-        this.updated_at = updated_at;
-    }
-
+    // Getters and Setters...
     public String getName() {
         return name;
     }
@@ -62,18 +62,58 @@ public User() {}
         this.updated_at = updated_at;
     }
 
+    public Long getId() {
+        return id;
+    }
+
     public void setId(Long id) {
         this.id = id;
     }
 
-    public Long getId() {
-        return id;
-    }
     public List<Rental> getRentals() {
         return rentals;
     }
 
     public void setRentals(List<Rental> rentals) {
         this.rentals = rentals;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    // Méthodes de UserDetails
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return List.of();
+    }
+
+    @Override
+    public String getUsername() {
+        return email;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
     }
 }
