@@ -13,6 +13,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -39,31 +40,39 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     @Autowired
     private JWTService jwtService;
 
+    @Autowired
+    private UserDetailsService userDetailsService;
+
+
+
     @Override
-    protected void doFilterInternal(HttpServletRequest request,  @NonNull HttpServletResponse response,  @NonNull FilterChain chain)
+    protected void doFilterInternal(HttpServletRequest request, @NonNull HttpServletResponse response, @NonNull FilterChain chain)
             throws ServletException, IOException {
+
         String authHeader = request.getHeader("Authorization");
+
         if (authHeader == null || !authHeader.startsWith("Bearer ")) {
             chain.doFilter(request, response);
             return;
         }
-        final Key secretKey = Keys.hmacShaKeyFor(secretKeyVar.getBytes());
+
         String token = authHeader.substring(7);
+        final Key secretKey = Keys.hmacShaKeyFor(secretKeyVar.getBytes());
+
         try {
-            Claims claims =    Jwts.parser().verifyWith((SecretKey) secretKey).build().parseSignedClaims(token).getPayload();
-            String username = claims.getSubject();
+            String username = jwtService.extractUsername(token);
+            System.out.println(username);
+            if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+                UserDetails userDetails = userDetailsService.loadUserByUsername(username);
 
-            UserDetails userDetails = User.builder()
-                    .username(username)
-                    .password("") // Pas utilisé ici
-                    .authorities(Collections.emptyList()) // Pas de rôles pour cet exemple
-                    .build();
-
-
-            if (jwtService.validateToken(token, userDetails)) {
-                UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
-                        userDetails, null, userDetails.getAuthorities());
-                SecurityContextHolder.getContext().setAuthentication(authentication);
+                if (jwtService.validateToken(token, userDetails)) {
+                    UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
+                            userDetails, null, userDetails.getAuthorities()
+                    );
+                    authentication.setDetails(new org.springframework.security.web.authentication.WebAuthenticationDetailsSource()
+                            .buildDetails(request));
+                    SecurityContextHolder.getContext().setAuthentication(authentication);
+                }
             }
         } catch (Exception e) {
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
@@ -71,6 +80,43 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         }
 
         chain.doFilter(request, response);
-
     }
+
+
+
+
+//    @Override
+//    protected void doFilterInternal(HttpServletRequest request,  @NonNull HttpServletResponse response,  @NonNull FilterChain chain)
+//            throws ServletException, IOException {
+//        String authHeader = request.getHeader("Authorization");
+//        if (authHeader == null || !authHeader.startsWith("Bearer ")) {
+//            chain.doFilter(request, response);
+//            return;
+//        }
+//        final Key secretKey = Keys.hmacShaKeyFor(secretKeyVar.getBytes());
+//        String token = authHeader.substring(7);
+//        try {
+//            Claims claims =    Jwts.parser().verifyWith((SecretKey) secretKey).build().parseSignedClaims(token).getPayload();
+//            String username = claims.getSubject();
+//
+//            UserDetails userDetails = User.builder()
+//                    .username(username)
+//                    .password("") // Pas utilisé ici
+//                    .authorities(Collections.emptyList()) // Pas de rôles pour cet exemple
+//                    .build();
+//
+//
+//            if (jwtService.validateToken(token, userDetails)) {
+//                UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
+//                        userDetails, null, userDetails.getAuthorities());
+//                SecurityContextHolder.getContext().setAuthentication(authentication);
+//            }
+//        } catch (Exception e) {
+//            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+//            return;
+//        }
+//
+//        chain.doFilter(request, response);
+//
+//    }
 }

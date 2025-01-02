@@ -1,4 +1,5 @@
 package fr.oc.chatop.web.controller;
+
 import fr.oc.chatop.dto.MessageDTO;
 import fr.oc.chatop.dto.RentalRequestDTO;
 import fr.oc.chatop.dto.RentalResponseDTO;
@@ -15,11 +16,14 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.StringHttpMessageConverter;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 import fr.oc.chatop.entity.Rental;
+
 import java.util.*;
+
 @RestController
 @RequestMapping("/rentals")
 public class RentalsController {
@@ -27,17 +31,18 @@ public class RentalsController {
     private final UserService userService;
     private final List<Rental> rentals = new ArrayList<>();
     private final RentalService rentalService;
-    private final StringHttpMessageConverter stringHttpMessageConverter;
 
-    public RentalsController(RentalService rentalService, StringHttpMessageConverter stringHttpMessageConverter, UserService userService) {
+
+
+    public RentalsController(RentalService rentalService , UserService userService) {
         this.rentalService = rentalService;
-        this.stringHttpMessageConverter = stringHttpMessageConverter;
+
         this.userService = userService;
     }
 
 
     @Operation(summary = "Create a new rental", description = "Creates a new rental with the provided details.",
-            security = { @SecurityRequirement(name = "Bearer Authentication") })
+            security = {@SecurityRequirement(name = "Bearer Authentication")})
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "Rental created successfully",
                     content = @Content(schema = @Schema(implementation = MessageDTO.class)))
@@ -45,104 +50,70 @@ public class RentalsController {
 
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public MessageDTO postRental(RentalRequestDTO rentalRequestDTO) {
-
-        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-
-
-        User userDetails = (User) principal;
-        String authenticatedUsername = userDetails.getName();
-        Long authenticatedID = userDetails.getId();
-
-
-        UserResponseDTO userResponseDTO = userService.getUserById(authenticatedID);
-        if (!userResponseDTO.getEmail().equals(authenticatedUsername)) {
-            throw new RuntimeException("Access denied: Unauthorized User");
-        }
+        AuthanticateUser();
         return rentalService.createRental(rentalRequestDTO);
     }
 
 
-
-
-
-
     @Operation(summary = "Get all rentals", description = "Retrieves all the rentals available.",
-            security = { @SecurityRequirement(name = "Bearer Authentication") })
+            security = {@SecurityRequirement(name = "Bearer Authentication")})
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Rentals retrieved successfully",
                     content = @Content(array = @ArraySchema(schema = @Schema(implementation = RentalResponseDTO.class))))
     })
 
-@GetMapping
-public  List<RentalResponseDTO>  getRental() {
+    @GetMapping
+    public List<RentalResponseDTO> getRental() {
 
 
+        AuthanticateUser();
+        return rentalService.getAllRentals();
 
-    Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-
-
-    User userDetails = (User) principal;
-    String authenticatedUsername = userDetails.getName();
-    Long authenticatedID = userDetails.getId();
-
-
-    UserResponseDTO userResponseDTO = userService.getUserById(authenticatedID);
-    if (!userResponseDTO.getEmail().equals(authenticatedUsername)) {
-        throw new RuntimeException("Access denied: Unauthorized User");
     }
-    return rentalService.getAllRentals();
-
-}
 
     @Operation(summary = "Get rental by ID", description = "Fetches rental information for a specific rental by its ID.",
-            security = { @SecurityRequirement(name = "Bearer Authentication") })
+            security = {@SecurityRequirement(name = "Bearer Authentication")})
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Rental found",
                     content = @Content(schema = @Schema(implementation = RentalResponseDTO.class))),
             @ApiResponse(responseCode = "404", description = "Rental not found")
     })
-@GetMapping("/{id}")
-public RentalResponseDTO getRentalById(@PathVariable Long id) {
-    Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+    @GetMapping("/{id}")
+    public RentalResponseDTO getRentalById(@PathVariable Long id) {
 
+        AuthanticateUser();
 
-    User userDetails = (User) principal;
-    String authenticatedUsername = userDetails.getName();
-    Long authenticatedID = userDetails.getId();
-
-
-    UserResponseDTO userResponseDTO = userService.getUserById(authenticatedID);
-    if (!userResponseDTO.getEmail().equals(authenticatedUsername)) {
-        throw new RuntimeException("Access denied: Unauthorized User");
+        return rentalService.getRentalById(id);
     }
 
-    return rentalService.getRentalById(id);
-}
+
     @Operation(summary = "Update rental by ID", description = "Updates the information of a specific rental by its ID.",
-            security = { @SecurityRequirement(name = "Bearer Authentication") })
+            security = {@SecurityRequirement(name = "Bearer Authentication")})
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Rental updated successfully", content = @Content(schema = @Schema(implementation = MessageDTO.class))),
             @ApiResponse(responseCode = "404", description = "Rental not found")
     })
-@PutMapping(value ="/{id}",consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-public MessageDTO putRental(@PathVariable Long id, RentalRequestDTO rentalRequest) {
-    Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-
-
-    User userDetails = (User) principal;
-    String authenticatedUsername = userDetails.getName();
-    Long authenticatedID = userDetails.getId();
-
-
-    UserResponseDTO userResponseDTO = userService.getUserById(authenticatedID);
-    if (!userResponseDTO.getEmail().equals(authenticatedUsername)) {
-        throw new RuntimeException("Access denied: Unauthorized User");
+    @PutMapping(value = "/{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public MessageDTO putRental(@PathVariable Long id, RentalRequestDTO rentalRequest) {
+        AuthanticateUser();
+        return rentalService.updateRental(id, rentalRequest);
     }
-    return rentalService.updateRental(id,rentalRequest);
-}
 
 
+    private void AuthanticateUser() {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 
+
+        User userDetails = (User) auth.getPrincipal();
+        String authenticatedUsername = userDetails.getName();
+        Long authenticatedID = userDetails.getId();
+
+
+        UserResponseDTO userResponseDTO = userService.getUserById(authenticatedID);
+        if (!userResponseDTO.getName().equals(authenticatedUsername)) {
+            throw new RuntimeException("Access denied: Unauthorized User");
+        }
+    }
 
 
 }

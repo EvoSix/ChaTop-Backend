@@ -1,5 +1,6 @@
 package fr.oc.chatop.services;
 
+import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
@@ -39,18 +40,24 @@ public class JWTService {
                 .compact();
 
     }
+    public String extractUsername(String token){
+        Claims claims =    Jwts.parser().verifyWith((SecretKey) secretKey).build().parseSignedClaims(token).getPayload();
+        return claims.getSubject();
+    }
 
     public boolean validateToken(String token, UserDetails userDetails) {
         try {
-            String username = extractEmail(token);
+            String username = extractUsername(token);
 
             return (username.equals(userDetails.getUsername()) );
         } catch (Exception e) {
+            System.out.println(e.getMessage());
+            System.out.println(e.getCause().toString());
             return false;
         }
     }
 
-    public String extractEmail(String token) {
+    public String extractEmail(String token) { //MAUVAIS
         return Jwts.parser()
 
                 .decryptWith((SecretKey) secretKey)
