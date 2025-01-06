@@ -14,13 +14,13 @@ import org.springframework.stereotype.Service;
 public class AuthService {
     private final UserRepos userRepos;
     private final JWTService jwtService;
-    private final BCryptPasswordEncoder passwordEncoder;
+
     @Autowired
     private AuthenticationManager authenticationManager;
     public AuthService(UserRepos userRepos, JWTService jwtService) {
         this.userRepos = userRepos;
         this.jwtService = jwtService;
-        this.passwordEncoder = new BCryptPasswordEncoder();
+
     }
 
     public AuthResponseDTO login(UserRequestDTO userRequestDTO) {

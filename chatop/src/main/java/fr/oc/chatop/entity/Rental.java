@@ -88,11 +88,11 @@ public class Rental {
         this.description = description;
     }
 
-    public User getOwner_id() {
+    public User getOwner() {
         return owner;
     }
 
-    public void setOwner_id(User owner_id) {
+    public void setOwner(User owner_id) {
         this.owner = owner_id;
     }
 

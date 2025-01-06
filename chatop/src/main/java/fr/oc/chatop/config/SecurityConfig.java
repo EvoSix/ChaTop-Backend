@@ -67,10 +67,11 @@ public class SecurityConfig {
 
         return http.build();
     }
+
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        // Define allowed origins for CORS
+        // Define allowed origins for CORS for Angular
         configuration.setAllowedOrigins(List.of("http://localhost:4200", "http://localhost:3001"));
         // Define allowed HTTP methods
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE"));
@@ -81,5 +82,4 @@ public class SecurityConfig {
         source.registerCorsConfiguration("/**", configuration);
         return source;
     }
-
 }

@@ -29,18 +29,18 @@ import java.util.*;
 @RequestMapping("auth")
 public class AuthController {
 
-    @Autowired
+
    // private AuthenticationManager authenticationManager;
     private final AuthService authService;
     private final UserRepos userRepos;
-    private final JWTService jwtService;
+
 
     private final PasswordEncoder passwordEncoder;
     @Autowired
     public AuthController(AuthService authService, UserRepos userRepos, JWTService jwtService, PasswordEncoder passwordEncoder) {
         this.authService = authService;
         this.userRepos = userRepos;
-        this.jwtService = jwtService;
+
 
         this.passwordEncoder = passwordEncoder;
     }
@@ -76,7 +76,7 @@ public class AuthController {
         //Save en BDD
         userRepos.save(user);
         //création de jwt
-        return   new AuthResponseDTO(user.getEmail());
+        return authService.login(userRequestDTO);
 
     }
     @Operation(summary = "User login", description = "Authenticates a user with the provided credentials.")

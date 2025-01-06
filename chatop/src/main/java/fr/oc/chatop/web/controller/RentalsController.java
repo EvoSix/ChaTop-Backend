@@ -49,7 +49,7 @@ public class RentalsController {
     })
 
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public MessageDTO postRental(RentalRequestDTO rentalRequestDTO) {
+    public MessageDTO postRental(@ModelAttribute RentalRequestDTO rentalRequestDTO) {
         AuthanticateUser();
         return rentalService.createRental(rentalRequestDTO);
     }
@@ -63,11 +63,13 @@ public class RentalsController {
     })
 
     @GetMapping
-    public List<RentalResponseDTO> getRental() {
+    public Map<String, List<RentalResponseDTO>> getRental() {
 
 
         AuthanticateUser();
-        return rentalService.getAllRentals();
+        Map<String, List<RentalResponseDTO>> response = new HashMap<>();
+        response.put("rentals",rentalService.getAllRentals());
+        return response;
 
     }
 
