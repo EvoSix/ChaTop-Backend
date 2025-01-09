@@ -68,7 +68,6 @@ public class RentalsController {
 
         AuthanticateUser();
         Map<String, List<RentalResponseDTO>> response = new HashMap<>();
-
         response.put("rentals",rentalService.getAllRentals());
         return response;
 
