@@ -10,7 +10,7 @@ import org.mapstruct.Mapping;
 
 @Mapper(componentModel = "spring")
 public interface RentalMapper {
-
+    @Mapping(target = "owner_id", source = "owner.id")
     RentalResponseDTO toDto(Rental rental);
     Rental toEntity(RentalResponseDTO rentalResponseDTO);
     @Mapping(target = "picture", source = "picture", qualifiedByName = "stringToMultipartFile")
