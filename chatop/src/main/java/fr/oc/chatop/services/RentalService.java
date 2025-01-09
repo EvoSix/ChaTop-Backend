@@ -33,7 +33,7 @@ public class RentalService {
     public List<RentalResponseDTO> getAllRentals() {
         return rentalRepos.findAll().stream()
                 .map(rentalMapper::toDto)
-                .collect(Collectors.toList());
+                .toList();
     }
 
     public RentalResponseDTO getRentalById(Long id) {
