@@ -64,6 +64,7 @@ public class RentalService {
         try{
         Rental rental = rentalMapper.toEntityReq(rentalResponseDTO);
             rental.setOwner(userInDB.get());
+            rental.setPicture("https://blog.technavio.org/wp-content/uploads/2018/12/Online-House-Rental-Sites.jpg");
          rentalRepos.save(rental);
         }catch (RuntimeException e){
 
