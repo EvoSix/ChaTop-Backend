@@ -50,7 +50,7 @@ public class RentalsController {
 
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public MessageDTO postRental(@ModelAttribute RentalRequestDTO rentalRequestDTO) {
-        AuthanticateUser();
+
         return rentalService.createRental(rentalRequestDTO);
     }
 
@@ -66,7 +66,6 @@ public class RentalsController {
     public Map<String, List<RentalResponseDTO>> getRental() {
 
 
-        AuthanticateUser();
         Map<String, List<RentalResponseDTO>> response = new HashMap<>();
         response.put("rentals",rentalService.getAllRentals());
         return response;
@@ -83,7 +82,7 @@ public class RentalsController {
     @GetMapping("/{id}")
     public RentalResponseDTO getRentalById(@PathVariable Long id) {
 
-        AuthanticateUser();
+
 
         return rentalService.getRentalById(id);
     }
@@ -97,25 +96,11 @@ public class RentalsController {
     })
     @PutMapping(value = "/{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public MessageDTO putRental(@PathVariable Long id, RentalRequestDTO rentalRequest) {
-        AuthanticateUser();
+
         return rentalService.updateRental(id, rentalRequest);
     }
 
 
-    private void AuthanticateUser() {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-
-
-        User userDetails = (User) auth.getPrincipal();
-        String authenticatedUsername = userDetails.getName();
-        Long authenticatedID = userDetails.getId();
-
-
-        UserResponseDTO userResponseDTO = userService.getUserById(authenticatedID);
-        if (!userResponseDTO.getName().equals(authenticatedUsername)) {
-            throw new RuntimeException("Access denied: Unauthorized User");
-        }
-    }
 
 
 }

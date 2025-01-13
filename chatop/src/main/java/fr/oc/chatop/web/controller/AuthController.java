@@ -30,16 +30,16 @@ import java.util.*;
 public class AuthController {
 
 
-   // private AuthenticationManager authenticationManager;
+
     private final AuthService authService;
-    private final UserRepos userRepos;
+    private final UserService userService;
 
 
     private final PasswordEncoder passwordEncoder;
     @Autowired
-    public AuthController(AuthService authService, UserRepos userRepos, JWTService jwtService, PasswordEncoder passwordEncoder) {
+    public AuthController(AuthService authService, UserService userService, JWTService jwtService, PasswordEncoder passwordEncoder) {
         this.authService = authService;
-        this.userRepos = userRepos;
+        this.userService = userService;
 
 
         this.passwordEncoder = passwordEncoder;
@@ -57,24 +57,7 @@ public class AuthController {
     public AuthResponseDTO postAuth(@RequestBody UserRequestDTO userRequestDTO) {
 
 
-        Optional<User> foundUser= userRepos.findByEmail(userRequestDTO.getEmail());
-        if(foundUser.isPresent()) {
-            return new AuthResponseDTO( "User already exists");
-        }
-    if(userRequestDTO.getName()==null && userRequestDTO.getPassword()==null) {
-        return new AuthResponseDTO( "required fields are mandatory: Name and Password");
-    }
-
-
-        User user = new User();
-        user.setEmail(userRequestDTO.getEmail());
-        user.setPassword(this.passwordEncoder.encode(userRequestDTO.getPassword()));
-        user.setName(userRequestDTO.getName());
-        user.setCreated_at(new Date().toString());
-        user.setUpdated_at(new Date().toString());
-
-        //Save en BDD
-        userRepos.save(user);
+userService.createUser(userRequestDTO);
         //création de jwt
         return authService.login(userRequestDTO);
 

@@ -10,6 +10,7 @@ import fr.oc.chatop.repos.RentalRepo;
 import fr.oc.chatop.repos.UserRepos;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -79,6 +80,14 @@ if(rental.getId()==null){
     return new MessageDTO("Rental not found");
 
 }
+
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        User currentUser = (User) auth.getPrincipal();
+
+        if (!rental.getOwner().getId().equals(currentUser.getId())) {
+            throw new AccessDeniedException("You are not authorized to modify this rental");
+        }
+
         rental.setName(rentalResponseDTO.getName());
         rental.setSurface(rentalResponseDTO.getSurface());
         rental.setPrice(rentalResponseDTO.getPrice());
@@ -101,4 +110,9 @@ if(rental.getId()==null){
                 .orElseThrow(() -> new RuntimeException("Rental not found"));
         rentalRepos.delete(rental);
     }
+
+
+
+
+
 }

@@ -39,20 +39,12 @@ public class UserController {
     })
     @GetMapping("/{id}")
     public UserResponseDTO getUserById(@PathVariable Long id) {
-        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        if (principal instanceof UserDetails userDetails) {
-            String authenticatedUsername = userDetails.getUsername();
 
 
-            UserResponseDTO userResponseDTO = userService.getUserById(id);
-            if (!userResponseDTO.getEmail().equals(authenticatedUsername)) {
-                throw new RuntimeException("Access denied: You can only view your own details.");
-            }
+        return userService.getUserById(id);
 
-            return userResponseDTO;
-        }
 
-        throw new RuntimeException("User is not authenticated.");
+
     }
 
 
