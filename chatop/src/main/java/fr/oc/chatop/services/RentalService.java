@@ -14,7 +14,10 @@ import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -64,9 +67,16 @@ public class RentalService {
         try{
         Rental rental = rentalMapper.toEntityReq(rentalResponseDTO);
             rental.setOwner(userInDB.get());
-            rental.setPicture("https://blog.technavio.org/wp-content/uploads/2018/12/Online-House-Rental-Sites.jpg");
+            MultipartFile picture = rentalResponseDTO.getPicture();
+            if (picture != null && !picture.isEmpty()) {
+                String imageUrl = saveImageToServer(picture);
+                rental.setPicture(imageUrl);
+            } else {
+                rental.setPicture("https://blog.technavio.org/wp-content/uploads/2018/12/Online-House-Rental-Sites.jpg");
+            }
+
          rentalRepos.save(rental);
-        }catch (RuntimeException e){
+        }catch (RuntimeException | IOException e){
 
             System.out.println("Excepetion At Create Rental: "+e.getMessage());
             return new MessageDTO(e.getMessage());
@@ -114,6 +124,19 @@ if(rental.getId()==null){
 
 
 
+    private String saveImageToServer(MultipartFile file) throws IOException {
 
+        String uploadDir = "C:/wamp64/www/uploads/";
+
+
+        String uniqueFilename = System.currentTimeMillis() + "_" + file.getOriginalFilename();
+
+
+        File destinationFile = new File(uploadDir + uniqueFilename);
+        file.transferTo(destinationFile);
+
+
+        return "http://localhost/uploads/" + uniqueFilename;
+    }
 
 }

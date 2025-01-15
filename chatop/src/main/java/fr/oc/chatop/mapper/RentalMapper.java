@@ -25,6 +25,6 @@ public interface RentalMapper {
     }
     @Named("multipartFileToString")
     default String mapMultipartFileToString(MultipartFile file) {
-        return file.getOriginalFilename();
+        return file != null ? file.getOriginalFilename() : null;
     }
 }
