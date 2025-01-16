@@ -9,20 +9,9 @@ import org.springframework.web.multipart.MultipartFile;
 @Getter
 @Setter
 public class RentalRequestDTO {
-
     private String name;
-
-
     private Long surface;
-
-
     private Double price;
-
-
     private MultipartFile picture;
-
-
     private String description;
-
-
 }

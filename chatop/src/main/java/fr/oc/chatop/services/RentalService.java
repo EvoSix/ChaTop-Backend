@@ -18,6 +18,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -74,7 +75,8 @@ public class RentalService {
             } else {
                 rental.setPicture("https://blog.technavio.org/wp-content/uploads/2018/12/Online-House-Rental-Sites.jpg");
             }
-
+            rental.setCreated_at(LocalDateTime.now());
+            rental.setUpdated_at(LocalDateTime.now());
          rentalRepos.save(rental);
         }catch (RuntimeException | IOException e){
 

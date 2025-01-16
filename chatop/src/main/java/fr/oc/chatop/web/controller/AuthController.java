@@ -58,7 +58,7 @@ public class AuthController {
 
 
 userService.createUser(userRequestDTO);
-        //création de jwt
+
         return authService.login(userRequestDTO);
 
     }
@@ -93,6 +93,6 @@ userService.createUser(userRequestDTO);
         }
 
         // Return the authenticated user's information
-        return new UserResponseDTO(user.getId().intValue(), user.getName(), user.getEmail(), user.getCreated_at(), user.getUpdated_at());
+        return new UserResponseDTO(user.getId().intValue(), user.getName(), user.getEmail(), user.getCreated_at().toString(), user.getUpdated_at().toString());
     }
 }

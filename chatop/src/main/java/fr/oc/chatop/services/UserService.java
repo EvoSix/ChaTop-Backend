@@ -14,6 +14,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -63,8 +64,8 @@ public class UserService implements UserDetailsService
         user.setEmail(userRequestDTO.getEmail());
         user.setPassword(this.passwordEncoder.encode(userRequestDTO.getPassword()));
         user.setName(userRequestDTO.getName());
-        user.setCreated_at(new Date().toString());
-        user.setUpdated_at(new Date().toString());
+        user.setCreated_at(LocalDateTime.now());
+        user.setUpdated_at(LocalDateTime.now());
 
         //Save en BDD
         userRepos.save(user);

@@ -81,9 +81,6 @@ public class RentalsController {
     })
     @GetMapping("/{id}")
     public RentalResponseDTO getRentalById(@PathVariable Long id) {
-
-
-
         return rentalService.getRentalById(id);
     }
 

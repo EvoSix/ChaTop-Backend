@@ -5,7 +5,13 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+
+import java.time.LocalDateTime;
+import java.util.List;
+
 @Entity
 @EntityListeners(AuditingEntityListener.class)
 @Table(name="rentals")
@@ -27,11 +33,15 @@ public class Rental {
     @ManyToOne
     @JoinColumn(name = "owner_id", nullable = false)
     private User owner;
+    @CreatedDate // Automatically captures when the rental was created
+    @Column(name = "created_at", updatable = false)
+    private LocalDateTime created_at;
+    @LastModifiedDate // Automatically captures when the rental was last updated
+    @Column(name = "updated_at")
+    private LocalDateTime updated_at;
 
-    private String created_at;
-    private String updated_at;
-
-
+    @OneToMany(mappedBy = "rental", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Messages> messages;
 
 
 }
