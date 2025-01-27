@@ -11,15 +11,18 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.security.core.Authentication;
 
 @RestController
 @RequestMapping("auth")
+@Validated
 public class AuthController {
 
 
@@ -45,7 +48,7 @@ public class AuthController {
                     content = @Content(schema = @Schema(implementation =String.class)))
     })
     @PostMapping("/register")
-    public AuthResponseDTO postAuth(@RequestBody UserRequestDTO userRequestDTO) {
+    public AuthResponseDTO postAuth(@Valid @RequestBody UserRequestDTO userRequestDTO) {
 
 
 userService.createUser(userRequestDTO);

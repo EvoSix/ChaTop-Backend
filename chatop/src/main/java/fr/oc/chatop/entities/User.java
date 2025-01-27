@@ -24,6 +24,7 @@ public class User implements UserDetails {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
+    @Column(nullable = false, unique = true)
     private String email;
     @CreatedDate
      @Column(name = "created_at", updatable = false)
@@ -31,7 +32,7 @@ public class User implements UserDetails {
     @LastModifiedDate // Automatically captures when the rental was last updated
     @Column(name = "updated_at")
     private LocalDateTime updated_at;
-
+    @Column(nullable = false)
     private String password;
 
     @OneToMany(mappedBy = "owner", cascade = CascadeType.ALL, orphanRemoval = true)
