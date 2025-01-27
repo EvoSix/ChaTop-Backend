@@ -4,7 +4,7 @@ import fr.oc.chatop.dto.MessageResponseDTO;
 import fr.oc.chatop.dto.RentalRequestDTO;
 import fr.oc.chatop.dto.RentalResponseDTO;
 import fr.oc.chatop.services.RentalService;
-import fr.oc.chatop.services.UserService;
+
 import io.swagger.v3.oas.annotations.*;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -12,9 +12,10 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
-import fr.oc.chatop.entities.Rental;
+
 
 import java.util.*;
 
@@ -22,16 +23,12 @@ import java.util.*;
 @RequestMapping("/rentals")
 public class RentalController {
 
-    private final UserService userService;
-    private final List<Rental> rentals = new ArrayList<>();
     private final RentalService rentalService;
 
 
 
-    public RentalController(RentalService rentalService , UserService userService) {
+    public RentalController(RentalService rentalService) {
         this.rentalService = rentalService;
-
-        this.userService = userService;
     }
 
 

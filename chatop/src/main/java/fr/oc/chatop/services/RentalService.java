@@ -78,7 +78,7 @@ public class RentalService {
          rentalRepos.save(rental);
         }catch (RuntimeException | IOException e){
 
-            System.out.println("Excepetion At Create Rental: "+e.getMessage());
+
             return new MessageResponseDTO(e.getMessage());
         }
         return new MessageResponseDTO("Rental created");
@@ -102,7 +102,7 @@ if(rental.getId()==null){
         rental.setName(rentalResponseDTO.getName());
         rental.setSurface(rentalResponseDTO.getSurface());
         rental.setPrice(rentalResponseDTO.getPrice());
- //       rental.setPicture(rentalResponseDTO.getPicture());
+
         rental.setDescription(rentalResponseDTO.getDescription());
 
         try {

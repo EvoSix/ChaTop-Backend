@@ -7,5 +7,5 @@ import org.mapstruct.Mapper;
 @Mapper(componentModel = "spring")
 public interface UserMapper {
     UserResponseDTO toDto(User user);
-    User toEntity(UserResponseDTO userResponseDTO);
+
 }

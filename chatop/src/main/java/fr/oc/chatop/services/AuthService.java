@@ -28,9 +28,7 @@ public class AuthService {
         User user = userRepos.findByEmail(userRequestDTO.getEmail())
                 .orElseThrow(() -> new RuntimeException("Invalid email or password"));
 
-//        if (!passwordEncoder.matches(userRequestDTO.getPassword(), user.getPassword())) {
-//            throw new RuntimeException("Invalid email or password");
-//        }
+
 
 
         authenticationManager.authenticate(

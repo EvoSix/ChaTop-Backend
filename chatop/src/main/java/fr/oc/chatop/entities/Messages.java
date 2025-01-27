@@ -9,9 +9,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
 
-/**
- * Represents the Messages entity in the database, linking messages to specific rentals and users.
- */
+
 @Entity
 @Table(name = "MESSAGES")
 @EntityListeners(AuditingEntityListener.class)

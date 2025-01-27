@@ -4,7 +4,7 @@ import fr.oc.chatop.dto.UserRequestDTO;
 import fr.oc.chatop.dto.UserResponseDTO;
 import fr.oc.chatop.entities.User;
 import fr.oc.chatop.services.AuthService;
-import fr.oc.chatop.services.JWTService;
+
 import fr.oc.chatop.services.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -14,7 +14,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.crypto.password.PasswordEncoder;
+
 import org.springframework.web.bind.annotation.*;
 import org.springframework.security.core.Authentication;
 
@@ -28,14 +28,12 @@ public class AuthController {
     private final UserService userService;
 
 
-    private final PasswordEncoder passwordEncoder;
     @Autowired
-    public AuthController(AuthService authService, UserService userService, JWTService jwtService, PasswordEncoder passwordEncoder) {
+    public AuthController(AuthService authService, UserService userService) {
         this.authService = authService;
         this.userService = userService;
 
 
-        this.passwordEncoder = passwordEncoder;
     }
 
 

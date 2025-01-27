@@ -2,8 +2,7 @@ package fr.oc.chatop.services;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
-import io.jsonwebtoken.io.Decoders;
+
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.beans.factory.annotation.Value;
@@ -27,9 +26,7 @@ public class JWTService {
         this.JWT_EXPIRATION = jwtExpiration;
     }
 
-    public void init() {
 
-    }
 
     public String generateToken(String email) {
         return Jwts.builder()
@@ -57,12 +54,7 @@ public class JWTService {
         }
     }
 
-    public String extractEmail(String token) { //MAUVAIS
-        return Jwts.parser()
-
-                .decryptWith((SecretKey) secretKey)
-                .build().parseSignedClaims(token).getPayload().getSubject();
-    }
+   
 
 
     public long extractExpiration() {

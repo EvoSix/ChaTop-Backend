@@ -12,17 +12,13 @@ import org.mapstruct.Mapping;
 public interface RentalMapper {
     @Mapping(target = "owner_id", source = "owner.id")
     RentalResponseDTO toDto(Rental rental);
-    Rental toEntity(RentalResponseDTO rentalResponseDTO);
-    @Mapping(target = "picture", source = "picture", qualifiedByName = "stringToMultipartFile")
-    RentalRequestDTO entityToDto(Rental rental);
+
+
 
     @Mapping(target = "picture", source = "picture", qualifiedByName = "multipartFileToString")
     Rental toEntityReq(RentalRequestDTO rentalRequestDTO);
 
-    @Named("stringToMultipartFile")
-    default MultipartFile mapStringToMultipartFile(String value) {
-        return null;
-    }
+
     @Named("multipartFileToString")
     default String mapMultipartFileToString(MultipartFile file) {
         return file != null ? file.getOriginalFilename() : null;

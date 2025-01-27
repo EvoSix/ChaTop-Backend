@@ -5,16 +5,14 @@ import fr.oc.chatop.entities.User;
 import fr.oc.chatop.mapper.UserMapper;
 import fr.oc.chatop.repos.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
+
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.List;
+
 import java.util.Optional;
-import java.util.stream.Collectors;
+
 
 @Service
 public class UserService
@@ -28,17 +26,9 @@ public class UserService
         this.userMapper = userMapper;
     }
 
-    public List<UserResponseDTO> getAllUsers() {
-        return userRepos.findAll().stream()
-                .map(userMapper::toDto)
-                .collect(Collectors.toList());
-    }
 
-    public UserResponseDTO getUserByEmail(String email) {
-        User user = userRepos.findByEmail(email)
-                .orElseThrow(() -> new RuntimeException("User not found"));
-        return userMapper.toDto(user);
-    }
+
+
 
     public UserResponseDTO getUserById(Long id) {
         User user = userRepos.findById(id)
@@ -67,11 +57,7 @@ public class UserService
         userRepos.save(user);
     }
 
-    public void deleteUser(Long id) {
-        User user = userRepos.findById(id)
-                .orElseThrow(() -> new RuntimeException("User not found"));
-        userRepos.delete(user);
-    }
+
 
 
 }
