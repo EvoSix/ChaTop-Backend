@@ -1,15 +1,14 @@
 package fr.oc.chatop.services;
 
-import fr.oc.chatop.dto.MessageDTO;
+import fr.oc.chatop.dto.MessageResponseDTO;
 import fr.oc.chatop.dto.MessageRequestDTO;
-import fr.oc.chatop.entity.Messages;
-import fr.oc.chatop.entity.Rental;
-import fr.oc.chatop.entity.User;
-import fr.oc.chatop.repos.MessageRepos;
-import fr.oc.chatop.repos.RentalRepo;
-import fr.oc.chatop.repos.UserRepos;
+import fr.oc.chatop.entities.Messages;
+import fr.oc.chatop.entities.Rental;
+import fr.oc.chatop.entities.User;
+import fr.oc.chatop.repos.MessagesRepository;
+import fr.oc.chatop.repos.RentalRepository;
+import fr.oc.chatop.repos.UserRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -18,17 +17,17 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class MessagesService {
 
-    private final MessageRepos messagesRepository;
+    private final MessagesRepository messagesRepository;
 
 
-    private final UserRepos userRepository;
+    private final UserRepository userRepository;
 
 
-    private final RentalRepo rentalRepository;
+    private final RentalRepository rentalRepository;
 
 
 
-    public MessageDTO createMessage(MessageRequestDTO messageRequest) {
+    public MessageResponseDTO createMessage(MessageRequestDTO messageRequest) {
         Messages message = new Messages();
 
         // Fetch the user from the database using the user ID from the request
@@ -56,7 +55,7 @@ public class MessagesService {
         messagesRepository.save(message);
 
         // Return a response object with the saved message details
-        return new MessageDTO(
+        return new MessageResponseDTO(
               "Message send with success"
         );
     }

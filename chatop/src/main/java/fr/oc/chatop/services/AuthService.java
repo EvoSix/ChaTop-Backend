@@ -2,22 +2,21 @@ package fr.oc.chatop.services;
 
 import fr.oc.chatop.dto.AuthResponseDTO;
 import fr.oc.chatop.dto.UserRequestDTO;
-import fr.oc.chatop.entity.User;
-import fr.oc.chatop.repos.UserRepos;
+import fr.oc.chatop.entities.User;
+import fr.oc.chatop.repos.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
 public class AuthService {
-    private final UserRepos userRepos;
+    private final UserRepository userRepos;
     private final JWTService jwtService;
 
     @Autowired
     private AuthenticationManager authenticationManager;
-    public AuthService(UserRepos userRepos, JWTService jwtService) {
+    public AuthService(UserRepository userRepos, JWTService jwtService) {
         this.userRepos = userRepos;
         this.jwtService = jwtService;
 

@@ -1,12 +1,9 @@
 package fr.oc.chatop.services;
-import fr.oc.chatop.dto.AuthResponseDTO;
-import fr.oc.chatop.dto.RentalResponseDTO;
 import fr.oc.chatop.dto.UserRequestDTO;
 import fr.oc.chatop.dto.UserResponseDTO;
-import fr.oc.chatop.entity.Rental;
-import fr.oc.chatop.entity.User;
+import fr.oc.chatop.entities.User;
 import fr.oc.chatop.mapper.UserMapper;
-import fr.oc.chatop.repos.UserRepos;
+import fr.oc.chatop.repos.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -15,19 +12,18 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
-public class UserService implements UserDetailsService
+public class UserService
 {
-    private final UserRepos userRepos;
+    private final UserRepository userRepos;
     private final UserMapper userMapper;
     @Autowired
     private PasswordEncoder passwordEncoder;
-    public UserService(UserRepos userRepos, UserMapper userMapper) {
+    public UserService(UserRepository userRepos, UserMapper userMapper) {
         this.userRepos = userRepos;
         this.userMapper = userMapper;
     }
@@ -77,10 +73,5 @@ public class UserService implements UserDetailsService
         userRepos.delete(user);
     }
 
-    @Override
-    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        User user = userRepos.findByEmail(email)
-                .orElseThrow(() -> new RuntimeException("User not found"));
-        return new fr.oc.chatop.entity.UserDetails(user);
-    }
+
 }

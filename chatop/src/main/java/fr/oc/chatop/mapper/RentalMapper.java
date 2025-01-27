@@ -4,7 +4,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import fr.oc.chatop.dto.RentalRequestDTO;
 import fr.oc.chatop.dto.RentalResponseDTO;
-import fr.oc.chatop.entity.Rental;
+import fr.oc.chatop.entities.Rental;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 

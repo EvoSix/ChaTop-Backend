@@ -1,10 +1,8 @@
 package fr.oc.chatop.web.controller;
 
-import fr.oc.chatop.dto.MessageDTO;
+import fr.oc.chatop.dto.MessageResponseDTO;
 import fr.oc.chatop.dto.RentalRequestDTO;
 import fr.oc.chatop.dto.RentalResponseDTO;
-import fr.oc.chatop.dto.UserResponseDTO;
-import fr.oc.chatop.entity.User;
 import fr.oc.chatop.services.RentalService;
 import fr.oc.chatop.services.UserService;
 import io.swagger.v3.oas.annotations.*;
@@ -15,18 +13,14 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.springframework.http.MediaType;
-import org.springframework.http.converter.StringHttpMessageConverter;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
-import fr.oc.chatop.entity.Rental;
+import fr.oc.chatop.entities.Rental;
 
 import java.util.*;
 
 @RestController
 @RequestMapping("/rentals")
-public class RentalsController {
+public class RentalController {
 
     private final UserService userService;
     private final List<Rental> rentals = new ArrayList<>();
@@ -34,7 +28,7 @@ public class RentalsController {
 
 
 
-    public RentalsController(RentalService rentalService , UserService userService) {
+    public RentalController(RentalService rentalService , UserService userService) {
         this.rentalService = rentalService;
 
         this.userService = userService;
@@ -45,11 +39,11 @@ public class RentalsController {
             security = {@SecurityRequirement(name = "Bearer Authentication")})
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "Rental created successfully",
-                    content = @Content(schema = @Schema(implementation = MessageDTO.class)))
+                    content = @Content(schema = @Schema(implementation = MessageResponseDTO.class)))
     })
 
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public MessageDTO postRental(@ModelAttribute RentalRequestDTO rentalRequestDTO) {
+    public MessageResponseDTO postRental(@ModelAttribute RentalRequestDTO rentalRequestDTO) {
 
         return rentalService.createRental(rentalRequestDTO);
     }
@@ -88,11 +82,11 @@ public class RentalsController {
     @Operation(summary = "Update rental by ID", description = "Updates the information of a specific rental by its ID.",
             security = {@SecurityRequirement(name = "Bearer Authentication")})
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Rental updated successfully", content = @Content(schema = @Schema(implementation = MessageDTO.class))),
+            @ApiResponse(responseCode = "200", description = "Rental updated successfully", content = @Content(schema = @Schema(implementation = MessageResponseDTO.class))),
             @ApiResponse(responseCode = "404", description = "Rental not found")
     })
     @PutMapping(value = "/{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public MessageDTO putRental(@PathVariable Long id, RentalRequestDTO rentalRequest) {
+    public MessageResponseDTO putRental(@PathVariable Long id, RentalRequestDTO rentalRequest) {
 
         return rentalService.updateRental(id, rentalRequest);
     }

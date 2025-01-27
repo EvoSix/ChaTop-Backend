@@ -1,7 +1,5 @@
 package fr.oc.chatop.config;
-import fr.oc.chatop.entity.User;
-import fr.oc.chatop.repos.UserRepos;
-import org.springframework.beans.factory.annotation.Autowired;
+import fr.oc.chatop.repos.UserRepository;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -12,13 +10,12 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
-import java.util.Collections;
 @Configuration
-public class AuthProvider   {
+public class AppConfig {
 
 
-    private final UserRepos userRepos;
-public AuthProvider (UserRepos userRepository){
+    private final UserRepository userRepos;
+public AppConfig(UserRepository userRepository){
     this.userRepos = userRepository;
 }
 

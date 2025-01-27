@@ -1,13 +1,12 @@
 package fr.oc.chatop.services;
-import fr.oc.chatop.dto.MessageDTO;
+import fr.oc.chatop.dto.MessageResponseDTO;
 import fr.oc.chatop.dto.RentalRequestDTO;
 import fr.oc.chatop.dto.RentalResponseDTO;
-import fr.oc.chatop.dto.UserResponseDTO;
-import fr.oc.chatop.entity.Rental;
-import fr.oc.chatop.entity.User;
+import fr.oc.chatop.entities.Rental;
+import fr.oc.chatop.entities.User;
 import fr.oc.chatop.mapper.RentalMapper;
-import fr.oc.chatop.repos.RentalRepo;
-import fr.oc.chatop.repos.UserRepos;
+import fr.oc.chatop.repos.RentalRepository;
+import fr.oc.chatop.repos.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.AccessDeniedException;
@@ -21,16 +20,15 @@ import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 public class RentalService {
 
     @Autowired
-    private UserRepos userRepository;
+    private UserRepository userRepository;
 
-    private final RentalRepo rentalRepos;
+    private final RentalRepository rentalRepos;
     private final RentalMapper rentalMapper;
 
 
@@ -49,7 +47,7 @@ public class RentalService {
         return rentalMapper.toDto(rental);
     }
 
-    public MessageDTO createRental(RentalRequestDTO rentalResponseDTO) {
+    public MessageResponseDTO createRental(RentalRequestDTO rentalResponseDTO) {
 
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 
@@ -81,16 +79,16 @@ public class RentalService {
         }catch (RuntimeException | IOException e){
 
             System.out.println("Excepetion At Create Rental: "+e.getMessage());
-            return new MessageDTO(e.getMessage());
+            return new MessageResponseDTO(e.getMessage());
         }
-        return new MessageDTO("Rental created");
+        return new MessageResponseDTO("Rental created");
     }
 
-    public MessageDTO updateRental(Long id, RentalRequestDTO rentalResponseDTO) {
+    public MessageResponseDTO updateRental(Long id, RentalRequestDTO rentalResponseDTO) {
         Rental rental = rentalRepos.findById(id)
                         .orElse(new Rental());
 if(rental.getId()==null){
-    return new MessageDTO("Rental not found");
+    return new MessageResponseDTO("Rental not found");
 
 }
 
@@ -110,10 +108,10 @@ if(rental.getId()==null){
         try {
 
             rentalRepos.save(rental);
-            return new MessageDTO("Rental updated successfully");
+            return new MessageResponseDTO("Rental updated successfully");
         } catch (Exception e) {
 
-            return new MessageDTO("An error occurred while updating the rental: " + e.getMessage());
+            return new MessageResponseDTO("An error occurred while updating the rental: " + e.getMessage());
         }
     }
 

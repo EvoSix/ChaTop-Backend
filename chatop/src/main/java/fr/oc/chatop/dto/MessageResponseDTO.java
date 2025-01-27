@@ -3,7 +3,6 @@ package fr.oc.chatop.dto;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
@@ -12,7 +11,7 @@ import java.time.LocalDateTime;
 @Setter
 @AllArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class MessageDTO {
+public class MessageResponseDTO {
     private Long id;
     private Long rental;
     private Long user;
@@ -20,7 +19,7 @@ public class MessageDTO {
     private LocalDateTime updated_at;
     private String messages;
 
-public MessageDTO(String messages) {
+public MessageResponseDTO(String messages) {
     this.messages = messages;
 }
 

@@ -1,13 +1,12 @@
 package fr.oc.chatop.repos;
-
-
-import fr.oc.chatop.entity.User;
+import fr.oc.chatop.entities.Rental;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
-
 import java.util.Optional;
-@Repository
-public interface UserRepos extends JpaRepository<User, Long> {
-    Optional<User> findByEmail(String email);
 
+
+@Repository
+public interface RentalRepository extends JpaRepository<Rental, Long> {
+
+    Optional<Rental> findByName(String name);
 }
