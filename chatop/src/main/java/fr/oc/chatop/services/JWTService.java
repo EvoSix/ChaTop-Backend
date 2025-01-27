@@ -48,13 +48,11 @@ public class JWTService {
 
             return (username.equals(userDetails.getUsername()) );
         } catch (Exception e) {
-            System.out.println(e.getMessage());
-            System.out.println(e.getCause().toString());
-            return false;
+                      return false;
         }
     }
 
-   
+
 
 
     public long extractExpiration() {
