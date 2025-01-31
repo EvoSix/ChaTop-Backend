@@ -11,6 +11,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.List;
+
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
@@ -27,7 +28,7 @@ public class User implements UserDetails {
     @Column(nullable = false, unique = true)
     private String email;
     @CreatedDate
-     @Column(name = "created_at", updatable = false)
+    @Column(name = "created_at", updatable = false)
     private LocalDateTime created_at;
     @LastModifiedDate // Automatically captures when the rental was last updated
     @Column(name = "updated_at")

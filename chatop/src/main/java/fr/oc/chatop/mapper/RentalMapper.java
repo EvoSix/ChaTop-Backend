@@ -1,4 +1,5 @@
 package fr.oc.chatop.mapper;
+
 import org.mapstruct.Named;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -12,7 +13,6 @@ import org.mapstruct.Mapping;
 public interface RentalMapper {
     @Mapping(target = "owner_id", source = "owner.id")
     RentalResponseDTO toDto(Rental rental);
-
 
 
     @Mapping(target = "picture", source = "picture", qualifiedByName = "multipartFileToString")

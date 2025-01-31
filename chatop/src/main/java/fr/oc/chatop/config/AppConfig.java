@@ -1,4 +1,5 @@
 package fr.oc.chatop.config;
+
 import fr.oc.chatop.repositories.UserRepository;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -15,15 +16,16 @@ public class AppConfig {
 
 
     private final UserRepository userRepos;
-public AppConfig(UserRepository userRepository){
-    this.userRepos = userRepository;
-}
+
+    public AppConfig(UserRepository userRepository) {
+        this.userRepos = userRepository;
+    }
 
     @Bean
     public UserDetailsService userDetailsService() {
-        return username -> userRepos.findByEmail(username)
-                .orElseThrow(() -> new UsernameNotFoundException("User not found: " + username));
+        return username -> userRepos.findByEmail(username).orElseThrow(() -> new UsernameNotFoundException("User not found: " + username));
     }
+
     @Bean
     public BCryptPasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();

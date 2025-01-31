@@ -1,7 +1,6 @@
 package fr.oc.chatop.config;
 
 
-
 import fr.oc.chatop.services.Interfaces.IJWTService;
 import fr.oc.chatop.services.JWTService;
 import io.jsonwebtoken.security.Keys;
@@ -35,18 +34,14 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     private String secretKeyVar;
 
 
-
-
     private final IJWTService jwtService;
 
 
     private final UserDetailsService userDetailsService;
 
 
-
     @Override
-    protected void doFilterInternal(HttpServletRequest request, @NonNull HttpServletResponse response, @NonNull FilterChain chain)
-            throws ServletException, IOException {
+    protected void doFilterInternal(HttpServletRequest request, @NonNull HttpServletResponse response, @NonNull FilterChain chain) throws ServletException, IOException {
 
         String authHeader = request.getHeader("Authorization");
 
@@ -65,11 +60,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 UserDetails userDetails = userDetailsService.loadUserByUsername(username);
 
                 if (jwtService.validateToken(token, userDetails)) {
-                    UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
-                            userDetails, null, userDetails.getAuthorities()
-                    );
-                    authentication.setDetails(new org.springframework.security.web.authentication.WebAuthenticationDetailsSource()
-                            .buildDetails(request));
+                    UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+                    authentication.setDetails(new org.springframework.security.web.authentication.WebAuthenticationDetailsSource().buildDetails(request));
                     SecurityContextHolder.getContext().setAuthentication(authentication);
                 }
             }
@@ -81,9 +73,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
         chain.doFilter(request, response);
     }
-
-
-
 
 
 }

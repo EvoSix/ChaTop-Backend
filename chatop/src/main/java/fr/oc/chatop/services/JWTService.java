@@ -8,15 +8,16 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
 import org.springframework.beans.factory.annotation.Value;
+
 import java.util.Date;
 import java.security.Key;
+
 import io.jsonwebtoken.security.Keys;
 
 import javax.crypto.SecretKey;
 
 @Service
 public class JWTService implements IJWTService {
-
 
 
     private final Key secretKey;
@@ -29,18 +30,18 @@ public class JWTService implements IJWTService {
     }
 
 
-
     public String generateToken(String email) {
         return Jwts.builder()
                 .subject(email)
                 .issuedAt(new Date(System.currentTimeMillis()))
-                .expiration(new Date(System.currentTimeMillis()+JWT_EXPIRATION))
+                .expiration(new Date(System.currentTimeMillis() + JWT_EXPIRATION))
                 .signWith(secretKey)
                 .compact();
 
     }
-    public String extractUsername(String token){
-        Claims claims =    Jwts.parser().verifyWith((SecretKey) secretKey).build().parseSignedClaims(token).getPayload();
+
+    public String extractUsername(String token) {
+        Claims claims = Jwts.parser().verifyWith((SecretKey) secretKey).build().parseSignedClaims(token).getPayload();
         return claims.getSubject();
     }
 
@@ -48,13 +49,11 @@ public class JWTService implements IJWTService {
         try {
             String username = extractUsername(token);
 
-            return (username.equals(userDetails.getUsername()) );
+            return (username.equals(userDetails.getUsername()));
         } catch (Exception e) {
-                      return false;
+            return false;
         }
     }
-
-
 
 
     public long extractExpiration() {

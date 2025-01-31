@@ -1,4 +1,5 @@
 package fr.oc.chatop.web.controller;
+
 import fr.oc.chatop.dto.UserResponseDTO;
 import fr.oc.chatop.services.Interfaces.IUserService;
 import fr.oc.chatop.services.UserService;
@@ -17,15 +18,11 @@ import org.springframework.web.bind.annotation.*;
 public class UserController {
 
 
-
     private final IUserService userService;
 
 
-
-
-
     @Operation(summary = "Get user by ID", description = "Fetches information about a user by their ID.",
-            security = { @SecurityRequirement(name = "Bearer Authentication") })
+            security = {@SecurityRequirement(name = "Bearer Authentication")})
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "User found",
                     content = @Content(schema = @Schema(implementation = UserResponseDTO.class))),
@@ -38,10 +35,8 @@ public class UserController {
         return userService.getUserById(id);
 
 
-
     }
 
 
-
-    }
+}
 

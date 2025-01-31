@@ -29,10 +29,6 @@ public class RentalController {
     private final IRentalService rentalService;
 
 
-
-
-
-
     @Operation(summary = "Create a new rental", description = "Creates a new rental with the provided details.",
             security = {@SecurityRequirement(name = "Bearer Authentication")})
     @ApiResponses(value = {
@@ -59,7 +55,7 @@ public class RentalController {
 
 
         Map<String, List<RentalResponseDTO>> response = new HashMap<>();
-        response.put("rentals",rentalService.getAllRentals());
+        response.put("rentals", rentalService.getAllRentals());
         return response;
 
     }
@@ -88,8 +84,6 @@ public class RentalController {
 
         return rentalService.updateRental(id, rentalRequest);
     }
-
-
 
 
 }

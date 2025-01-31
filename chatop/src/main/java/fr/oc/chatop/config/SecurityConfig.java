@@ -1,4 +1,5 @@
 package fr.oc.chatop.config;
+
 import fr.oc.chatop.repositories.UserRepository;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -25,16 +26,14 @@ import static org.springframework.security.config.Customizer.withDefaults;
 @EnableWebSecurity
 public class SecurityConfig {
 
-  private final AuthenticationProvider authenticationProvider;
-
-
+    private final AuthenticationProvider authenticationProvider;
 
 
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
-    public SecurityConfig(UserRepository userRepos, JwtAuthenticationFilter jwtAuthenticationFilter,
-                          AuthenticationProvider authenticationProvider, UserDetailsService userDetailsService) {
 
-       this.authenticationProvider = authenticationProvider;
+    public SecurityConfig(JwtAuthenticationFilter jwtAuthenticationFilter, AuthenticationProvider authenticationProvider) {
+
+        this.authenticationProvider = authenticationProvider;
         this.jwtAuthenticationFilter = jwtAuthenticationFilter;
 
     }
@@ -45,13 +44,8 @@ public class SecurityConfig {
         http
                 .cors(withDefaults())
                 .csrf(AbstractHttpConfigurer::disable)
-                .authorizeHttpRequests(auth -> auth
-                      .requestMatchers( "/auth/register","/auth/login","/swagger-ui/**", "/v3/api-docs/**", "/swagger-ui.html").permitAll()
-                                 .anyRequest().authenticated()
-                )
-                .sessionManagement(session -> session
-                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                )
+                .authorizeHttpRequests(auth -> auth.requestMatchers("/auth/register", "/auth/login", "/swagger-ui/**", "/v3/api-docs/**", "/swagger-ui.html")
+                .permitAll().anyRequest().authenticated()).sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authenticationProvider(authenticationProvider)
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
 

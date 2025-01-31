@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.Objects;
 import java.util.Optional;
+
 @Service
 @RequiredArgsConstructor
 public class MessagesService implements IMessagesService {
@@ -28,7 +29,6 @@ public class MessagesService implements IMessagesService {
     private final RentalRepository rentalRepository;
 
 
-
     public Optional<MessageResponseDTO> createMessage(MessageRequestDTO messageRequest) {
         Messages message = new Messages();
 
@@ -36,9 +36,8 @@ public class MessagesService implements IMessagesService {
         Optional<User> userInDB = userRepository.findById(messageRequest.getUser_id());
         if (userInDB.isPresent()) {
             message.setUser(userInDB.get());
-        }
-        else {
-            System.out.println("User not found");
+        } else {
+
             return Optional.empty();
         }
 
@@ -47,12 +46,12 @@ public class MessagesService implements IMessagesService {
         if (rentalInDB.isPresent()) {
             message.setRental(rentalInDB.get());
         } else {
-            System.out.println("Rental not found");
+
             return Optional.empty();
         }
-if (messageRequest.getMessage().isEmpty()){
-    System.out.println("Message is empty");
-    return Optional.empty();
+        if (messageRequest.getMessage().isEmpty()) {
+
+            return Optional.empty();
         }
         // Set message content and timestamps
         message.setMessage(messageRequest.getMessage());
@@ -64,7 +63,7 @@ if (messageRequest.getMessage().isEmpty()){
 
         // Return a response object with the saved message details
         return Optional.of(new MessageResponseDTO(
-              "Message send with success")
+                "Message send with success")
         );
     }
 }

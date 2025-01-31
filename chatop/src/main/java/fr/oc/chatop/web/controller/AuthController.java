@@ -53,7 +53,7 @@ public class AuthController {
 
 Optional <User> User= userService.createUser(userRequestDTO);
 if(User.isPresent()){
-   return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+    return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
 }
         Optional<AuthResponseDTO> authResponse = authService.login(userRequestDTO);
         return authResponse.map(ResponseEntity::ok)

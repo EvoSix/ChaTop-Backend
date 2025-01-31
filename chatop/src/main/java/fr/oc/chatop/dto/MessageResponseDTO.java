@@ -15,8 +15,8 @@ public class MessageResponseDTO {
 
     private String message;
 
-public MessageResponseDTO(String messages) {
-    this.message = messages;
-}
+    public MessageResponseDTO(String messages) {
+        this.message = messages;
+    }
 
 }
