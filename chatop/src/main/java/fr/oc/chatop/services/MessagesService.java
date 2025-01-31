@@ -5,9 +5,9 @@ import fr.oc.chatop.dto.MessageRequestDTO;
 import fr.oc.chatop.entities.Messages;
 import fr.oc.chatop.entities.Rental;
 import fr.oc.chatop.entities.User;
-import fr.oc.chatop.repos.MessagesRepository;
-import fr.oc.chatop.repos.RentalRepository;
-import fr.oc.chatop.repos.UserRepository;
+import fr.oc.chatop.repositories.MessagesRepository;
+import fr.oc.chatop.repositories.RentalRepository;
+import fr.oc.chatop.repositories.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

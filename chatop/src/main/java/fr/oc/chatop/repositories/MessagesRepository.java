@@ -1,9 +1,7 @@
-package fr.oc.chatop.repos;
+package fr.oc.chatop.repositories;
 
 import fr.oc.chatop.entities.Messages;
 import org.springframework.data.jpa.repository.JpaRepository;
-
-import java.util.List;
 
 public interface MessagesRepository extends JpaRepository<Messages, Long> {
 

@@ -13,12 +13,15 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.security.core.Authentication;
+
+import java.util.Optional;
 
 @RestController
 @RequestMapping("auth")
@@ -64,8 +67,12 @@ userService.createUser(userRequestDTO);
     })
     @PostMapping("/login")
     public ResponseEntity<AuthResponseDTO> postLogin(@RequestBody UserRequestDTO userRequestDTO) {
-       AuthResponseDTO authResponse = authService.login(userRequestDTO);
-        return ResponseEntity.ok(authResponse);
+      // AuthResponseDTO authResponse = authService.login(userRequestDTO);
+   Optional<AuthResponseDTO> authResponse = authService.login(userRequestDTO);
+
+   authResponse.ifPresentOrElse(auth -> ResponseEntity.ok(auth), () -> ResponseEntity.status(HttpStatus.UNAUTHORIZED));
+    //    return ResponseEntity.ok(authResponse);
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED);
     }
 
 

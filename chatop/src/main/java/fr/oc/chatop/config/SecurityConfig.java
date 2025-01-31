@@ -1,5 +1,5 @@
 package fr.oc.chatop.config;
-import fr.oc.chatop.repos.UserRepository;
+import fr.oc.chatop.repositories.UserRepository;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationProvider;

@@ -3,7 +3,7 @@ import fr.oc.chatop.dto.UserRequestDTO;
 import fr.oc.chatop.dto.UserResponseDTO;
 import fr.oc.chatop.entities.User;
 import fr.oc.chatop.mapper.UserMapper;
-import fr.oc.chatop.repos.UserRepository;
+import fr.oc.chatop.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.security.crypto.password.PasswordEncoder;

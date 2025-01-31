@@ -1,4 +1,4 @@
-package fr.oc.chatop.repos;
+package fr.oc.chatop.repositories;
 
 
 import fr.oc.chatop.entities.User;

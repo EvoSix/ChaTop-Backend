@@ -3,11 +3,13 @@ package fr.oc.chatop.services;
 import fr.oc.chatop.dto.AuthResponseDTO;
 import fr.oc.chatop.dto.UserRequestDTO;
 import fr.oc.chatop.entities.User;
-import fr.oc.chatop.repos.UserRepository;
+import fr.oc.chatop.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
 
 @Service
 public class AuthService {
@@ -16,19 +18,21 @@ public class AuthService {
 
     @Autowired
     private AuthenticationManager authenticationManager;
+
     public AuthService(UserRepository userRepos, JWTService jwtService) {
         this.userRepos = userRepos;
         this.jwtService = jwtService;
 
     }
 
-    public AuthResponseDTO login(UserRequestDTO userRequestDTO) {
+    public Optional<AuthResponseDTO> login(UserRequestDTO userRequestDTO) {
 
 
-        User user = userRepos.findByEmail(userRequestDTO.getEmail())
-                .orElseThrow(() -> new RuntimeException("Invalid email or password"));
+        Optional<User> user = userRepos.findByEmail(userRequestDTO.getEmail());
 
-
+        if (!user.isPresent()) {
+            return Optional.empty();
+        }
 
 
         authenticationManager.authenticate(
