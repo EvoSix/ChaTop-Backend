@@ -36,7 +36,7 @@ public class MessagesController {
     })
 
     @PostMapping
-    public ResponseEntity<?> createUser(@RequestBody MessageRequestDTO messageRequest) {
+    public ResponseEntity<?> PostMessage(@RequestBody MessageRequestDTO messageRequest) {
 
         Optional<MessageResponseDTO> MessageDTO= messagesService.createMessage(messageRequest);
         if (MessageDTO.isPresent()) {

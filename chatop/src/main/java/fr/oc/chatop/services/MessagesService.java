@@ -38,6 +38,7 @@ public class MessagesService implements IMessagesService {
             message.setUser(userInDB.get());
         }
         else {
+            System.out.println("User not found");
             return Optional.empty();
         }
 
@@ -46,9 +47,11 @@ public class MessagesService implements IMessagesService {
         if (rentalInDB.isPresent()) {
             message.setRental(rentalInDB.get());
         } else {
+            System.out.println("Rental not found");
             return Optional.empty();
         }
-if (!messageRequest.getMessage().isEmpty()){
+if (messageRequest.getMessage().isEmpty()){
+    System.out.println("Message is empty");
     return Optional.empty();
         }
         // Set message content and timestamps
