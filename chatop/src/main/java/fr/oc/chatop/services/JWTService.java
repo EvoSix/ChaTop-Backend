@@ -1,9 +1,11 @@
 package fr.oc.chatop.services;
 
+import fr.oc.chatop.services.Interfaces.IJWTService;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
 import org.springframework.beans.factory.annotation.Value;
 import java.util.Date;
@@ -13,7 +15,7 @@ import io.jsonwebtoken.security.Keys;
 import javax.crypto.SecretKey;
 
 @Service
-public class JWTService {
+public class JWTService implements IJWTService {
 
 
 

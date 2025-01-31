@@ -4,16 +4,17 @@ import fr.oc.chatop.dto.MessageResponseDTO;
 import fr.oc.chatop.dto.UserRequestDTO;
 import fr.oc.chatop.dto.UserResponseDTO;
 import fr.oc.chatop.entities.User;
-import fr.oc.chatop.services.AuthService;
 
-import fr.oc.chatop.services.UserService;
+
+import fr.oc.chatop.services.Interfaces.IAuthService;
+import fr.oc.chatop.services.Interfaces.IUserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.validation.Valid;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -26,22 +27,17 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("auth")
-@Validated
+
+@RequiredArgsConstructor
 public class AuthController {
 
 
 
-    private final AuthService authService;
-    private final UserService userService;
+    private final IAuthService authService;
+    private final IUserService userService;
 
 
-    @Autowired
-    public AuthController(AuthService authService, UserService userService) {
-        this.authService = authService;
-        this.userService = userService;
 
-
-    }
 
 
 

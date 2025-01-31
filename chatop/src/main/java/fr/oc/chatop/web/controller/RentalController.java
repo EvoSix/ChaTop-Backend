@@ -3,6 +3,7 @@ package fr.oc.chatop.web.controller;
 import fr.oc.chatop.dto.MessageResponseDTO;
 import fr.oc.chatop.dto.RentalRequestDTO;
 import fr.oc.chatop.dto.RentalResponseDTO;
+import fr.oc.chatop.services.Interfaces.IRentalService;
 import fr.oc.chatop.services.RentalService;
 
 import io.swagger.v3.oas.annotations.*;
@@ -13,6 +14,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,15 +23,14 @@ import java.util.*;
 
 @RestController
 @RequestMapping("/rentals")
+@RequiredArgsConstructor
 public class RentalController {
 
-    private final RentalService rentalService;
+    private final IRentalService rentalService;
 
 
 
-    public RentalController(RentalService rentalService) {
-        this.rentalService = rentalService;
-    }
+
 
 
     @Operation(summary = "Create a new rental", description = "Creates a new rental with the provided details.",

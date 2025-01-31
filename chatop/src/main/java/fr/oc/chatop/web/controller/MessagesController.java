@@ -2,6 +2,7 @@ package fr.oc.chatop.web.controller;
 
 import fr.oc.chatop.dto.MessageResponseDTO;
 import fr.oc.chatop.dto.MessageRequestDTO;
+import fr.oc.chatop.services.Interfaces.IMessagesService;
 import fr.oc.chatop.services.MessagesService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -9,6 +10,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -17,14 +19,12 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/messages")
-//@RequiredArgsConstructor
+@RequiredArgsConstructor
 public class MessagesController {
 
-    private final MessagesService messagesService;
+    private final IMessagesService messagesService;
 
-    public MessagesController(MessagesService messagesService) {
-        this.messagesService = messagesService;
-    }
+
 
     @Operation(summary = "Create a message", description = "Creates a new message related to a specific rental.",
             security = {@SecurityRequirement(name = "Bearer Authentication")})

@@ -2,8 +2,10 @@ package fr.oc.chatop.config;
 
 
 
+import fr.oc.chatop.services.Interfaces.IJWTService;
 import fr.oc.chatop.services.JWTService;
 import io.jsonwebtoken.security.Keys;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.lang.NonNull;
@@ -25,6 +27,7 @@ import java.security.Key;
 
 
 @Component
+@RequiredArgsConstructor
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
 
@@ -33,11 +36,11 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
 
 
-    @Autowired
-    private JWTService jwtService;
 
-    @Autowired
-    private UserDetailsService userDetailsService;
+    private final IJWTService jwtService;
+
+
+    private final UserDetailsService userDetailsService;
 
 
 

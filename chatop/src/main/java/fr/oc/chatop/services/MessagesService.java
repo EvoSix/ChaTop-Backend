@@ -8,6 +8,7 @@ import fr.oc.chatop.entities.User;
 import fr.oc.chatop.repositories.MessagesRepository;
 import fr.oc.chatop.repositories.RentalRepository;
 import fr.oc.chatop.repositories.UserRepository;
+import fr.oc.chatop.services.Interfaces.IMessagesService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -16,7 +17,7 @@ import java.util.Objects;
 import java.util.Optional;
 @Service
 @RequiredArgsConstructor
-public class MessagesService {
+public class MessagesService implements IMessagesService {
 
     private final MessagesRepository messagesRepository;
 

@@ -7,6 +7,7 @@ import fr.oc.chatop.entities.User;
 import fr.oc.chatop.mapper.RentalMapper;
 import fr.oc.chatop.repositories.RentalRepository;
 import fr.oc.chatop.repositories.UserRepository;
+import fr.oc.chatop.services.Interfaces.IRentalService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.AccessDeniedException;
@@ -23,10 +24,10 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
-public class RentalService {
+public class RentalService implements IRentalService {
 
-    @Autowired
-    private UserRepository userRepository;
+
+    private final UserRepository userRepository;
 
     private final RentalRepository rentalRepos;
     private final RentalMapper rentalMapper;

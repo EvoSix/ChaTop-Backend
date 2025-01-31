@@ -4,6 +4,7 @@ import fr.oc.chatop.dto.UserResponseDTO;
 import fr.oc.chatop.entities.User;
 import fr.oc.chatop.mapper.UserMapper;
 import fr.oc.chatop.repositories.UserRepository;
+import fr.oc.chatop.services.Interfaces.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -15,7 +16,7 @@ import java.util.Optional;
 
 
 @Service
-public class UserService
+public class UserService implements IUserService
 {
     private final UserRepository userRepos;
     private final UserMapper userMapper;

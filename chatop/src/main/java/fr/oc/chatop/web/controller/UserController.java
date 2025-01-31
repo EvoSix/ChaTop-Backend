@@ -1,5 +1,6 @@
 package fr.oc.chatop.web.controller;
 import fr.oc.chatop.dto.UserResponseDTO;
+import fr.oc.chatop.services.Interfaces.IUserService;
 import fr.oc.chatop.services.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -7,19 +8,19 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/users")
+@RequiredArgsConstructor
 public class UserController {
 
 
 
-    private final UserService userService;
+    private final IUserService userService;
 
-    public UserController(UserService userService) {
-        this.userService = userService;
-    }
+
 
 
 
