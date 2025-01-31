@@ -1,5 +1,6 @@
 package fr.oc.chatop.web.controller;
 import fr.oc.chatop.dto.AuthResponseDTO;
+import fr.oc.chatop.dto.MessageResponseDTO;
 import fr.oc.chatop.dto.UserRequestDTO;
 import fr.oc.chatop.dto.UserResponseDTO;
 import fr.oc.chatop.entities.User;
@@ -51,12 +52,13 @@ public class AuthController {
                     content = @Content(schema = @Schema(implementation =String.class)))
     })
     @PostMapping("/register")
-    public AuthResponseDTO postAuth(@Valid @RequestBody UserRequestDTO userRequestDTO) {
+    public ResponseEntity<AuthResponseDTO> postAuth(@Valid @RequestBody UserRequestDTO userRequestDTO) {
 
 
-userService.createUser(userRequestDTO);
-
-        return authService.login(userRequestDTO);
+        userService.createUser(userRequestDTO);
+        Optional<AuthResponseDTO> authResponse = authService.login(userRequestDTO);
+        return authResponse.map(ResponseEntity::ok)
+                .orElseGet(() -> ResponseEntity.status(HttpStatus.BAD_REQUEST).build());
 
     }
     @Operation(summary = "User login", description = "Authenticates a user with the provided credentials.")
@@ -66,13 +68,17 @@ userService.createUser(userRequestDTO);
 
     })
     @PostMapping("/login")
-    public ResponseEntity<AuthResponseDTO> postLogin(@RequestBody UserRequestDTO userRequestDTO) {
+    public ResponseEntity<?> postLogin(@RequestBody UserRequestDTO userRequestDTO) {
       // AuthResponseDTO authResponse = authService.login(userRequestDTO);
    Optional<AuthResponseDTO> authResponse = authService.login(userRequestDTO);
 
-   authResponse.ifPresentOrElse(auth -> ResponseEntity.ok(auth), () -> ResponseEntity.status(HttpStatus.UNAUTHORIZED));
-    //    return ResponseEntity.ok(authResponse);
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED);
+
+        if (authResponse.isPresent()) {
+            return ResponseEntity.ok(authResponse.get());
+        } else {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                    .body(new MessageResponseDTO("Error"));
+        }
     }
 
 

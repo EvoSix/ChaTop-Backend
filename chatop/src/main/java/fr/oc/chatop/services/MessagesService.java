@@ -12,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.Objects;
 import java.util.Optional;
 @Service
 @RequiredArgsConstructor
@@ -27,15 +28,16 @@ public class MessagesService {
 
 
 
-    public MessageResponseDTO createMessage(MessageRequestDTO messageRequest) {
+    public Optional<MessageResponseDTO> createMessage(MessageRequestDTO messageRequest) {
         Messages message = new Messages();
 
         // Fetch the user from the database using the user ID from the request
         Optional<User> userInDB = userRepository.findById(messageRequest.getUser_id());
         if (userInDB.isPresent()) {
             message.setUser(userInDB.get());
-        } else {
-            throw new RuntimeException("User not found");
+        }
+        else {
+            return Optional.empty();
         }
 
         // Fetch the rental from the database using the rental ID from the request
@@ -43,9 +45,11 @@ public class MessagesService {
         if (rentalInDB.isPresent()) {
             message.setRental(rentalInDB.get());
         } else {
-            throw new RuntimeException("Rental not found");
+            return Optional.empty();
         }
-
+if (!messageRequest.getMessage().isEmpty()){
+    return Optional.empty();
+        }
         // Set message content and timestamps
         message.setMessage(messageRequest.getMessage());
         message.setCreatedAt(LocalDateTime.now());
@@ -55,8 +59,8 @@ public class MessagesService {
         messagesRepository.save(message);
 
         // Return a response object with the saved message details
-        return new MessageResponseDTO(
-              "Message send with success"
+        return Optional.of(new MessageResponseDTO(
+              "Message send with success")
         );
     }
 }

@@ -30,7 +30,7 @@ public class AuthService {
 
         Optional<User> user = userRepos.findByEmail(userRequestDTO.getEmail());
 
-        if (!user.isPresent()) {
+        if (user.isEmpty()) {
             return Optional.empty();
         }
 
@@ -42,8 +42,8 @@ public class AuthService {
                 )
         );
 
-
-        String token = jwtService.generateToken(user.getEmail());
-        return new AuthResponseDTO(token, jwtService.extractExpiration());
+        User userEntity = user.get();
+        String token = jwtService.generateToken(userEntity.getEmail());
+        return Optional.of(new AuthResponseDTO(token));
     }
 }

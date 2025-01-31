@@ -9,7 +9,7 @@ import lombok.*;
 
 public class AuthResponseDTO {
     private String token;
-    private long expiresIn;
+
 
 
 }

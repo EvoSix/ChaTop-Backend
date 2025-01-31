@@ -9,7 +9,11 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/messages")
@@ -32,8 +36,15 @@ public class MessagesController {
     })
 
     @PostMapping
-    public MessageResponseDTO createUser(@RequestBody MessageRequestDTO messageRequest) {
+    public ResponseEntity<?> createUser(@RequestBody MessageRequestDTO messageRequest) {
 
-        return messagesService.createMessage(messageRequest); // Create and return the new message
+        Optional<MessageResponseDTO> MessageDTO= messagesService.createMessage(messageRequest);
+        if (MessageDTO.isPresent()) {
+            return ResponseEntity.ok(MessageDTO.get());
+        } else {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .build();
+        }
+
     }
 }
