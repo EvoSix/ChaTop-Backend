@@ -5,6 +5,7 @@ import fr.oc.chatop.entities.User;
 import fr.oc.chatop.mapper.UserMapper;
 import fr.oc.chatop.repositories.UserRepository;
 import fr.oc.chatop.services.Interfaces.IUserService;
+import org.apache.coyote.BadRequestException;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -32,18 +33,20 @@ public class UserService implements IUserService
 
 
     public UserResponseDTO getUserById(Long id) {
-        User user = userRepos.findById(id)
-                .orElseThrow(() -> new RuntimeException("User not found"));
-        return userMapper.toDto(user);
+        Optional<User> user =userRepos.findById(id);
+        return user.map(userMapper::toDto).orElse(null);
+
+
     }
 
-    public void createUser(UserRequestDTO userRequestDTO) {
+    public Optional<User> createUser(UserRequestDTO userRequestDTO) {
         Optional<User> foundUser= userRepos.findByEmail(userRequestDTO.getEmail());
         if(foundUser.isPresent()) {
-            throw new RuntimeException("User already exists");
+
+            return foundUser;
         }
         if(userRequestDTO.getName()==null && userRequestDTO.getPassword()==null) {
-            throw new RuntimeException( "required fields are mandatory: Name and Password");
+            return   Optional.of(new User());
         }
 
 
@@ -56,6 +59,7 @@ public class UserService implements IUserService
 
         //Save en BDD
         userRepos.save(user);
+        return Optional.empty();
     }
 
 

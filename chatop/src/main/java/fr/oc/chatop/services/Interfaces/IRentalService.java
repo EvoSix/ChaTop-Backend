@@ -10,5 +10,5 @@ public interface IRentalService {
     RentalResponseDTO getRentalById(Long id);
     MessageResponseDTO createRental(RentalRequestDTO rentalResponseDTO);
     MessageResponseDTO updateRental(Long id, RentalRequestDTO rentalResponseDTO);
-    void deleteRental(Long id);
+
 }

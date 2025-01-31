@@ -15,6 +15,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.apache.coyote.BadRequestException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -48,10 +49,12 @@ public class AuthController {
                     content = @Content(schema = @Schema(implementation =String.class)))
     })
     @PostMapping("/register")
-    public ResponseEntity<AuthResponseDTO> postAuth(@Valid @RequestBody UserRequestDTO userRequestDTO) {
+    public ResponseEntity<AuthResponseDTO> postAuth(@Valid @RequestBody UserRequestDTO userRequestDTO)  {
 
-
-        userService.createUser(userRequestDTO);
+Optional <User> User= userService.createUser(userRequestDTO);
+if(User.isPresent()){
+   return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+}
         Optional<AuthResponseDTO> authResponse = authService.login(userRequestDTO);
         return authResponse.map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.status(HttpStatus.BAD_REQUEST).build());
