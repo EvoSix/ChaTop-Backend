@@ -46,6 +46,18 @@ Back-end :
 Front-end 
 - Node.js
 - npm 
+### Variable D'environnement
+Pour des raison de securité certain élément seront en variable d'environement sont a enrister avant.
+Windows (via CMD): setx NOM_VARIABLE "valeur" /M
+Linux: echo 'export NOM_VARIABLE="valeur"' | sudo tee -a /etc/profile
+Mac: sudo nano /etc/zshenv puis export NOM_VARIABLE="valeur" puis source /etc/zshenv
+
+Les variables a définir:
+SERVER_PORT: port pour le serveur
+DATABASE_URL: Chemins vers la BDD. ne pas oublié jdbc:mysql:// devant, exemple jdbc:mysql://localhost:3306/Chatop
+DATABASE_USER: Username ou identifiant de la BDD
+DATABASE_PWD: Mot de passe de la BDD. Si il n'y a pas de mot de passe, pas besoin de créer de variable.
+JWT_SECRET: La secret key pour générer des token.
 
 ### Installation du Back-end
 
